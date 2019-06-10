@@ -1,4 +1,9 @@
 # Simple Maze Problem
+## Instructions
+1. Clone the repo
+2. Write your code, make sure to include everything needed to run it
+3. Send a pull request and eamil us back 
+
 
 ## Evaluation Criteria 
 * Correctness of the solution 
