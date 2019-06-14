@@ -39,6 +39,50 @@ class Problem:
             path_cost += (x1-x2)**2+(y1-y2)**2
         return path_cost
 
+class Problem3D(Problem):
+    def __init__(self,grid,start_state,end_state):
+        self.start_state = start_state;
+        self.end_state = end_state;
+        self.grid = grid;
+        self.actions = ["left","right","forward","backward","front","back"]
+
+    def isLegalState(self,state):
+        z,y,x = state
+        if x>=len(self.grid) or y>= len(self.grid) or z>=len(self.grid) or x<0\
+        or y < 0 or z<0 or self.grid[x][y][z] == 0:
+            return False
+        else:
+            return True
+
+    def getSuccessors(self,state):
+        children = [];
+        z,y,x = state
+        for action in self.actions:
+            if action == "left":
+                child_state = (z,y,x-1)
+            elif action == "right":
+                child_state = (z,y,x+1)
+            elif action == "forward":
+                child_state = (z,y+1,x)
+            elif action == "backward":
+                child_state = (z,y-1,x)
+            elif action == "front":
+                child_state = (z+1,y,x)
+            elif action == "back":
+                child_state == (z-1,y,x)
+            if self.isLegalState(child_state):
+                children.append(child_state)
+        return children
+
+    def getCostOfAction(self,solution):
+        path_cost = 0;
+        for state, next_state in zip(solution, solution[1:]):
+            z1,y1,x1 = state
+            z2, y2,x2 = next_state
+            path_cost += (x1-x2)**2+(y1-y2)**2 + (z1-z2)**2
+        return path_cost
+
+
 class Node:
     def __init__(self,state=None,parent=None,path_cost=0):
         self.state = state
@@ -79,20 +123,17 @@ class PriorityQueue:
     def isEmpty(self):
         return len(self.heap) == 0
 
-    def update(self,item, priority):
-        for index, (p,c,i) in enumerate(self.heap):
-            if i== item:
-                if p <= priority:
-                    break
-                del self.heap[index]
-                self.heap.append((priority,c,item))
-                heapq.heapify(self.heap)
-                break
-            else:
-                self.push(item,priority)
-
 def printMatrix(matrix):
     for row in matrix:
         for c in row:
             print c ,
+        print ""
+
+def printMatrix3D(matrix):
+    for height in matrix:
+        for row in height:
+            for c in row:
+                print c ,
+            print ""
+        print ""
         print ""
