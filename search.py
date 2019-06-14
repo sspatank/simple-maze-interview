@@ -2,6 +2,7 @@
 
 from utilities import *
 
+# Euclid's distance. Used for path costa and as a heuristic
 def Euclid(state,problem):
     y1,x1 = state
     y2,x2 = problem.end_state
@@ -12,6 +13,7 @@ def Euclid3D(state,problem):
     z2, y2,x2 = problem.end_state
     return (y1-y2)**2+(x1-x2)**2 + (z1-z2)**2
 
+# A* traversal
 def traverse(problem,heuristic=Euclid):
     n = Node(state=problem.start_state,parent=None,path_cost=0)
 
@@ -30,9 +32,10 @@ def traverse(problem,heuristic=Euclid):
                 children = n.getChild(problem)
                 for child in children:
                     frontier.push(child,child.path_cost+heuristic(child.state,problem))
- 
+
     return 'Error'
 
+# Converts the list of tuples of the solution path to a matrix
 def convertSolutionToMatrix(solution,problem):
     output = [[0]*len(problem.grid) for _ in xrange(len(problem.grid))]
     for y,x in solution:
